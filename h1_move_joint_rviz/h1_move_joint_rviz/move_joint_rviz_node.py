@@ -8,7 +8,7 @@ from unitree_go.msg import LowState
 from sensor_msgs.msg import JointState
 from rclpy.node import Node
 import rclpy
-from h1_info_library import LIMITS_OF_JOINTS_WITH_HANDS_FROM_VENDOR, map_range 
+from h1_info_library import LIMITS_OF_JOINTS_WITH_HANDS_FROM_VENDOR
 
 # Frequency in Hz for the node
 FREQUENCY = 60.0
@@ -52,6 +52,38 @@ LIMITS_URDF = {
     32: (-3.05, 3.05),  # left_wrist
     33: (-3.05, 3.05),  # right_wrist
 }
+
+def map_range(
+    value: float,
+    in_min: float,
+    in_max: float,
+    out_min: float,
+    out_max: float,
+) -> float:
+    """
+    Linearly map a value from one numerical range to another.
+
+    This function performs a linear transformation of the input value from
+    the original range [in_min, in_max] to the target range [out_min, out_max]
+    The formula used is:
+        output = (value - in_min) * (out_max - out_min) /
+            (in_max - in_min) + out_min
+
+    Args:
+        value: Input value to be mapped
+        in_min: Minimum value of the original range
+        in_max: Maximum value of the original range
+        out_min: Minimum value of the target range
+        out_max: Maximum value of the target range
+
+    Returns:
+        float: Value mapped to the target range
+
+    Example:
+        >>> map_range(5, 0, 10, 0, 100)
+        50.0
+    """
+    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
 class MoveJointRvizNode(Node):
