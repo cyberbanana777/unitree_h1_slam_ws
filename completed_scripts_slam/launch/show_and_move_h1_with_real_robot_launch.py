@@ -24,7 +24,7 @@ def generate_launch_description():
 
     move_node = Node(
         package='h1_move_joint_rviz',
-        executable='h1_move_joint_rviz_node'
+        executable='move_joint_rviz_with_real_robot_node'
     )
 
     return LaunchDescription([
