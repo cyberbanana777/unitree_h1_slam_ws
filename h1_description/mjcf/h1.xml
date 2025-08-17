@@ -1,3 +1,5 @@
+<!-- Copyright (c) 2016-2022 HangZhou YuShu TECHNOLOGY CO.,LTD. ("Unitree Robotics") -->
+
 <mujoco model="h1">
   <compiler angle="radian" meshdir="../meshes" autolimits="true"/>
 

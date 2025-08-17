@@ -13,7 +13,7 @@
 
   <depend>ros2launch</depend>
   <depend>h1_move_joint_rviz</depend>
-  <depend>h1_decription</depend>
+  <depend>h1_description</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

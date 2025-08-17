@@ -9,7 +9,9 @@
 
   <depend>rclpy</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>unitree_go</depend>
+  <depend>h1_info_library</depend>
   
 
   <test_depend>ament_copyright</test_depend>

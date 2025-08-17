@@ -1,3 +1,7 @@
+# Copyright (c) 2016-2022 HangZhou YuShu TECHNOLOGY CO.,LTD. ("Unitree Robotics")
+# All rights reserved.
+# Modified by Alice Zenina and Alexander Grachev RTU MIREA (Russia)
+
 # Copyright (c) 2025 Alice Zenina and Alexander Grachev RTU MIREA (Russia)
 # SPDX-License-Identifier: MIT
 # Details in the LICENSE file in the root of the package.
