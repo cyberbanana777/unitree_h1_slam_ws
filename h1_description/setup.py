@@ -21,10 +21,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Your Name',
-    maintainer_email='you@email.com',
+    maintainer='banana-killer',
+    maintainer_email='sashagrachev2005@gmail.com',
     description='Python-based H1 robot description',
-    license='Apache 2.0',
+    license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

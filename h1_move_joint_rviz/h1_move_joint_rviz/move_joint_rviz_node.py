@@ -1,3 +1,7 @@
+# Copyright (c) 2025 Alice Zenina and Alexander Grachev RTU MIREA (Russia)
+# SPDX-License-Identifier: MIT
+# Details in the LICENSE file in the root of the package.
+
 from unitree_go.msg import MotorState
 from unitree_go.msg import MotorStates
 from unitree_go.msg import MotorCmd

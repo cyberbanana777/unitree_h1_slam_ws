@@ -4,8 +4,13 @@
   <name>h1_move_joint_rviz</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="sashagrachev@gmail.com">banana-killer</maintainer>
-  <license>TODO: License declaration</license>
+  <maintainer email="sashagrachev2005@gmail.com">banana-killer</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>unitree_go</depend>
+  
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
