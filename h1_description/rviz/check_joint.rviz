@@ -1,3 +1,5 @@
+# Copyright (c) 2016-2022 HangZhou YuShu TECHNOLOGY CO.,LTD. ("Unitree Robotics")
+
 Panels:
   - Class: rviz_common/Displays
     Help Height: 78
