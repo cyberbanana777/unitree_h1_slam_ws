@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            f"h1_move_joint_rviz_node = {package_name}.move_joint_rviz_node:main "
         ],
     },
 )

@@ -2,56 +2,57 @@
 # SPDX-License-Identifier: MIT
 # Details in the LICENSE file in the root of the package.
 
-from unitree_go.msg import MotorState
+
 from unitree_go.msg import MotorStates
-from unitree_go.msg import MotorCmd
-from unitree_go.msg import MotorCmds
-from unitree_go.msg import LowCmd
 from unitree_go.msg import LowState
 from sensor_msgs.msg import JointState
 from rclpy.node import Node
 import rclpy
+from h1_info_library import LIMITS_OF_JOINTS_WITH_HANDS_FROM_VENDOR, map_range 
 
-# Частота в гц для ноды
-FREQUENCY = 333.33
+# Frequency in Hz for the node
+FREQUENCY = 60.0
 
-JOINT_INDEX_H1 = {
-    'right_hip_roll_joint': 0,
-    'right_hip_pitch_joint': 1,
-    'right_knee_joint': 2,
-    'left_hip_roll_joint': 3,
-    'left_hip_pitch_joint': 4,
-    'left_knee_joint': 5,
-    'torso_joint': 6,
-    'left_hip_yaw_joint': 7,
-    'right_hip_yaw_joint': 8,
-    'NOT USED': 9,
-    'left_ankle_joint': 10,
-    'right_ankle_joint': 11,
-    'right_shoulder_roll_joint': 12,
-    'right_shoulder_pitch_joint': 13,
-    'right_shoulder_yaw_joint': 14,
-    'right_elbow_joint': 15,
-    'left_shoulder_roll_joint': 16,
-    'left_shoulder_pitch_joint': 17,
-    'left_shoulder_yaw_joint': 18,
-    'left_elbow_joint': 19
+FINGERS_OFFSET = 20
+WRISTS_OFFSET = 32
+
+LIMITS_URDF = {
+    0: (-0.43, 0.43),  # right_hip_roll_joint
+    1: (-3.14, 2.53),  # right_hip_pitch_joint
+    2: (-0.26, 2.05),  # right_knee_joint
+    3: (-0.43, 0.43),  # left_hip_roll_joint
+    4: (-3.14, 2.53),  # left_hip_pitch_joint
+    5: (-0.26, 2.05),  # left_knee_joint
+    6: (-2.35, 2.35),  # torso_joint
+    7: (-0.43, 0.43),  # left_hip_yaw_joint
+    8: (-0.43, 0.43),  # right_hip_yaw_joint
+    9: (0.0, 1.0),  # IMPACT
+    10: (-0.87, 0.52),  # left_ankle_joint
+    11: (-0.87, 0.52),  # right_ankle_joint
+    12: (-2.87, 2.87),  # right_shoulder_pitch_joint
+    13: (-3.11, 0.34),  # right_shoulder_roll_joint
+    14: (-4.45, 1.3),  # right_shoulder_yaw_joint
+    15: (-1.25, 2.61),  # right_elbow_joint
+    16: (-2.87, 2.87),  # left_shoulder_pitch_joint
+    17: (-0.34, 3.11),  # left_shoulder_roll_joint
+    18: (-1.3, 4.45),  # left_shoulder_yaw_joint
+    19: (-1.25, 2.61),  # left_elbow_joint
+    20: (1.7, 0.0),  # right_pinky
+    21: (1.7, 0.0),  # right_ring
+    22: (1.7, 0.0),  # right_middle
+    23: (1.7, 0.0),  # right_index
+    24: (0.6, 0.0),  # right_thumb_bend
+    25: (1.3, 0.0),  # right_thumb_rotation
+    26: (1.7, 0.0),  # left_pinky
+    27: (1.7, 0.0),  # left_ring
+    28: (1.7, 0.0),  # left_middle
+    29: (1.7, 0.0),  # left_index
+    30: (0.6, 0.0),  # left_thumb_bend
+    31: (1.3, 0.0),  # left_thumb_rotation
+    32: (-3.05, 3.05),  # left_wrist
+    33: (-3.05, 3.05),  # right_wrist
 }
 
-JOINT_INDEX_HANDS = {
-    'right_pinky': 0,
-    'right_ring': 1,
-    'right_middle': 2,
-    'right_index': 3,
-    'right_thumb_bend': 4,
-    'right_thumb_rotation': 5,
-    'left_pinky': 6,
-    'left_ring': 7,
-    'left_middle': 8,
-    'left_index': 9,
-    'left_thumb_bend': 10,
-    'left_thumb_rotation': 11,
-}
 
 class MoveJointRvizNode(Node):
 
@@ -59,7 +60,7 @@ class MoveJointRvizNode(Node):
         super().__init__('move_joint_rviz')
         self.get_logger().info('Node started')
 
-                # текущая позиция
+        # current position
         self.current_jpos_H1 = {
             0: 0.0,  # right_hip_roll_joint M
             1: 0.0,  # right_hip_pitch_joint M
@@ -70,6 +71,7 @@ class MoveJointRvizNode(Node):
             6: 0.0,  # torso_joint M
             7: 0.0,  # left_hip_yaw_joint M
             8: 0.0,  # right_hip_yaw_joint M
+            9: 0.0,  # IMPACT
             10: 0.0,  # left_ankle_joint S
             11: 0.0,  # right_ankle_joint S
             12: 0.0,  # right_shoulder_pitch_joint M
@@ -79,44 +81,50 @@ class MoveJointRvizNode(Node):
             16: 0.0,  # left_shoulder_pitch_joint M
             17: 0.0,  # left_shoulder_roll_joint M
             18: 0.0,  # left_shoulder_yaw_joint M
-            19: 0.0  # left_elbow_joint M
-        }
-
-        self.current_jpos_hands = {
-            0: 1.0,  # pinky
-            1: 1.0,  # ring
-            2: 1.0,  # middle
-            3: 1.0,  # index
-            4: 1.0,  # thumb-bend
-            5: 1.0,  # thumb-rotation
-            6: 1.0,  # pinky
-            7: 1.0,  # ring
-            8: 1.0,  # middle
-            9: 1.0,  # index
-            10: 1.0,  # thumb-bend
-            11: 1.0  # thumb-rotation
+            19: 0.0,  # left_elbow_joint M
+            20: 1.0,  # right_pinky
+            21: 1.0,  # right_ring
+            22: 1.0,  # right_middle
+            23: 1.0,  # right_index
+            24: 1.0,  # right_thumb-bend
+            25: 1.0,  # right_thumb-rotation
+            26: 1.0,  # left_pinky
+            27: 1.0,  # left_ring
+            28: 1.0,  # left_middle
+            29: 1.0,  # left_index
+            30: 1.0,  # left_thumb-bend
+            31: 1.0,  # left_thumb-rotation
+            32: 1.74,  # left_wrist
+            33: -3.12,  # right_wrist
         }
     
+
         self.control_dt = 1 / FREQUENCY
 
-        # подписка на топик, в который публикуется информация о углах поворота звеньев
-        self.subscription_LowCmd = self.create_subscription(
+        self.subscription_lowstate = self.create_subscription(
             LowState,
             'lowstate',
-            self.listener_callback_LowCmd,
-            10
-        )
-        
-        self.publisher_joint_state = self.create_publisher(
-            JointState,
-            '/joint_states', 
+            self.listener_callback_lowstate,
             10
         )
 
         self.subscription_state = self.create_subscription(
             MotorStates,
             'inspire/state',
-            self.listener_callback_states,
+            self.listener_callback_inspire_states,
+            10
+        )
+
+        self.subscription_wrist_state = self.create_subscription(
+            MotorStates,
+            'wrist/states',
+            self.listener_callback_wrist_states,
+            10
+        )
+
+        self.publisher_joint_state = self.create_publisher(
+            JointState,
+            'joint_states', 
             10
         )
 
@@ -125,6 +133,7 @@ class MoveJointRvizNode(Node):
     def timer_callback(self):
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = "pelvis"
         msg.name = [
                     "right_hip_roll_joint", 
                     "right_hip_pitch_joint", 
@@ -137,12 +146,12 @@ class MoveJointRvizNode(Node):
                     "right_hip_yaw_joint",
                     "left_ankle_joint",
                     "right_ankle_joint",
-                    "right_shoulder_pitch_joint",  # Исправлено shouldEr -> shoulder
-                    "right_shoulder_roll_joint",   # Исправлено
-                    "right_shoulder_yaw_joint",    # Исправлено
+                    "right_shoulder_pitch_joint",  
+                    "right_shoulder_roll_joint", 
+                    "right_shoulder_yaw_joint",
                     "right_elbow_joint",
-                    "left_shoulder_pitch_joint",   # Исправлено
-                    "left_shoulder_roll_joint",    # Исправлено 
+                    "left_shoulder_pitch_joint",
+                    "left_shoulder_roll_joint", 
                     "left_shoulder_yaw_joint", 
                     "left_elbow_joint",
                     "R_pinky_proximal_joint",
@@ -156,27 +165,48 @@ class MoveJointRvizNode(Node):
                     "L_middle_proximal_joint",
                     "L_index_proximal_joint",
                     "L_thumb_proximal_pitch_joint",
-                    "L_thumb_proximal_yaw_joint"
+                    "L_thumb_proximal_yaw_joint",
+                    "right_hand_joint",
+                    "left_hand_joint",
                 ]
         
-        h1_positions = [self.current_jpos_H1[k] for k in sorted(self.current_jpos_H1)]
-        hands_positions = [self.current_jpos_hands[k] for k in sorted(self.current_jpos_hands)]
-        msg.position = h1_positions + hands_positions
+        h1_positions = []
+        
+        for i in range(len(self.current_jpos_H1)):
+            if i != 9:
+                orig_lim = LIMITS_OF_JOINTS_WITH_HANDS_FROM_VENDOR[i]
+                rviz_lim = LIMITS_URDF[i]
+                converted_value = map_range(
+                    self.current_jpos_H1[i],
+                    orig_lim[0],
+                    orig_lim[1],
+                    rviz_lim[0],
+                    rviz_lim[1],
+                )
+                h1_positions.append(converted_value)
+        
+        msg.position = h1_positions
 
         self.publisher_joint_state.publish(msg)
 
-    def listener_callback_LowCmd(self, msg):
-        '''Обновляем текущее положение'''
-        for i in list(self.current_jpos_H1.keys()):
+    def listener_callback_lowstate(self, msg):
+        '''Updating the current position of the robot'''
+        for i in range(20):
             self.current_jpos_H1[i] = msg.motor_state[i].q
 
-    def listener_callback_states(self, msg):
-        '''Обновляем текущее положение кистей'''
-        for i in list(self.current_jpos_hands.keys()):
-            self.current_jpos_hands[i] = msg.states[i].q
+    def listener_callback_inspire_states(self, msg):
+        '''Updating the current position of the fingers'''
+        for i in range(12):
+            self.current_jpos_H1[i + FINGERS_OFFSET] = msg.states[i].q
+
+    def listener_callback_wrist_states(self, msg):
+        '''Updating the current position of the brushes'''
+        for i in range(2):
+            self.current_jpos_H1[i + WRISTS_OFFSET] = msg.states[i].q
+
 
 def main(args=None):
-    """Основная функция для запуска ноды."""
+    """The main function for launching a node."""
     rclpy.init(args=args)
     node = MoveJointRvizNode()
 
