@@ -390,6 +390,8 @@ Visualization Manager:
           Value: true
         R_thumb_proximal_base:
           Value: true
+        base_footprint:
+          Value: true
         d435_left_imager_link:
           Value: true
         d435_rgb_module_link:
@@ -448,80 +450,81 @@ Visualization Manager:
       Show Axes: false
       Show Names: false
       Tree:
-        pelvis:
-          left_hip_yaw_link:
-            left_hip_roll_link:
-              left_hip_pitch_link:
-                left_knee_link:
-                  left_ankle_link:
-                    {}
-          right_hip_yaw_link:
-            right_hip_roll_link:
-              right_hip_pitch_link:
-                right_knee_link:
-                  right_ankle_link:
-                    {}
-          torso_link:
-            d435_left_imager_link:
-              {}
-            d435_rgb_module_link:
-              {}
-            left_shoulder_pitch_link:
-              left_shoulder_roll_link:
-                left_shoulder_yaw_link:
-                  left_elbow_link:
-                    left_hand_link:
-                      L_hand_base_link:
-                        L_index_proximal:
-                          L_index_intermediate:
-                            {}
-                        L_middle_proximal:
-                          L_middle_intermediate:
-                            {}
-                        L_pinky_proximal:
-                          L_pinky_intermediate:
-                            {}
-                        L_ring_proximal:
-                          L_ring_intermediate:
-                            {}
-                        L_thumb_proximal_base:
-                          L_thumb_proximal:
-                            L_thumb_intermediate:
-                              L_thumb_distal:
-                                {}
-            logo_link:
-              {}
-            mid360_link:
-              {}
-            right_shoulder_pitch_link:
-              right_shoulder_roll_link:
-                right_shoulder_yaw_link:
-                  right_elbow_link:
-                    right_hand_link:
-                      R_hand_base_link:
-                        R_index_proximal:
-                          R_index_intermediate:
-                            {}
-                        R_middle_proximal:
-                          R_middle_intermediate:
-                            {}
-                        R_pinky_proximal:
-                          R_pinky_intermediate:
-                            {}
-                        R_ring_proximal:
-                          R_ring_intermediate:
-                            {}
-                        R_thumb_proximal_base:
-                          R_thumb_proximal:
-                            R_thumb_intermediate:
-                              R_thumb_distal:
-                                {}
+        base_footprint:
+          pelvis:
+            left_hip_yaw_link:
+              left_hip_roll_link:
+                left_hip_pitch_link:
+                  left_knee_link:
+                    left_ankle_link:
+                      {}
+            right_hip_yaw_link:
+              right_hip_roll_link:
+                right_hip_pitch_link:
+                  right_knee_link:
+                    right_ankle_link:
+                      {}
+            torso_link:
+              d435_left_imager_link:
+                {}
+              d435_rgb_module_link:
+                {}
+              left_shoulder_pitch_link:
+                left_shoulder_roll_link:
+                  left_shoulder_yaw_link:
+                    left_elbow_link:
+                      left_hand_link:
+                        L_hand_base_link:
+                          L_index_proximal:
+                            L_index_intermediate:
+                              {}
+                          L_middle_proximal:
+                            L_middle_intermediate:
+                              {}
+                          L_pinky_proximal:
+                            L_pinky_intermediate:
+                              {}
+                          L_ring_proximal:
+                            L_ring_intermediate:
+                              {}
+                          L_thumb_proximal_base:
+                            L_thumb_proximal:
+                              L_thumb_intermediate:
+                                L_thumb_distal:
+                                  {}
+              logo_link:
+                {}
+              mid360_link:
+                {}
+              right_shoulder_pitch_link:
+                right_shoulder_roll_link:
+                  right_shoulder_yaw_link:
+                    right_elbow_link:
+                      right_hand_link:
+                        R_hand_base_link:
+                          R_index_proximal:
+                            R_index_intermediate:
+                              {}
+                          R_middle_proximal:
+                            R_middle_intermediate:
+                              {}
+                          R_pinky_proximal:
+                            R_pinky_intermediate:
+                              {}
+                          R_ring_proximal:
+                            R_ring_intermediate:
+                              {}
+                          R_thumb_proximal_base:
+                            R_thumb_proximal:
+                              R_thumb_intermediate:
+                                R_thumb_distal:
+                                  {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 238; 238; 236
-    Fixed Frame: pelvis
+    Fixed Frame: base_footprint
     Frame Rate: 30
   Name: root
   Tools:
@@ -561,25 +564,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.789824962615967
+      Distance: 4.644041061401367
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.11145864427089691
-        Y: 0.10033124685287476
-        Z: -0.35909000039100647
-      Focal Shape Fixed Size: true
+        X: -0.493051141500473
+        Y: -0.2854645550251007
+        Z: 0.6825330257415771
+      Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5703983902931213
+      Pitch: 0.4503985047340393
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 0.6204066276550293
+      Yaw: 0.6103983521461487
     Saved: ~
 Window Geometry:
   Displays:
