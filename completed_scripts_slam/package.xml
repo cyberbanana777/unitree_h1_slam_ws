@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>completed_scripts_slam</name>
+  <version>1.0.0</version>
+  <description>
+    In this package, you will find python launch files
+    that launch specific node configurations,
+    as indicated in the name of the launch files for SLAM at Unitree H1
+  </description>
+  <maintainer email="sashagrachev2005@gmail.com">banana-killer</maintainer>
+  <license>MIT</license>
+
+  <depend>ros2launch</depend>
+  <depend>h1_move_joint_rviz</depend>
+  <depend>h1_decription</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
