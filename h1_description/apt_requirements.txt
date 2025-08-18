@@ -1,2 +1,0 @@
-ros-foxy-joint-state-publisher
-ros-foxy-joint-state-publisher-gui
