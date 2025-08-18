@@ -68,8 +68,8 @@ START_POSITION = {
     29: 1.0,  # left_index
     30: 1.0,  # left_thumb-bend
     31: 1.0,  # left_thumb-rotation
-    32: 1.74,  # left_wrist
-    33: -3.12,  # right_wrist
+    32: 1.65,  # left_wrist
+    33: -3.03,  # right_wrist
 }
 
 JOINTS_NAMES = [
@@ -104,8 +104,8 @@ JOINTS_NAMES = [
     "L_index_proximal_joint",
     "L_thumb_proximal_pitch_joint",
     "L_thumb_proximal_yaw_joint",
-    "right_hand_joint",
     "left_hand_joint",
+    "right_hand_joint",
 ]
 
 def map_range(
